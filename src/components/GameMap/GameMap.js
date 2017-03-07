@@ -37,12 +37,6 @@ NUTS 3  800.000  150.000
 
 */
 
-
-function mathGetAbsWithNegativ(oldValue, newValue) {
-  return (Math.abs(oldValue - newValue) * (oldValue > newValue ? -1 : 1));
-}
-
-
 class GameMap extends React.PureComponent {
   static propTypes = {
     id: PropTypes.number.isRequired,
@@ -52,20 +46,6 @@ class GameMap extends React.PureComponent {
     super(props, context);
 
     this.cameraPosition = new THREE.Vector3(0, 150, 500);
-
-    this.targetRotationOnMouseDown = 0;
-
-    this.mouseX = 0;
-    this.mouseOnMouseDown = {
-      x: 0,
-      y: 0,
-    };
-
-    this.targetRotation = 0;
-    this.groupPositionDiff = {
-      x: 0,
-      y: 0,
-    };
 
     const size = {
       width: 500,
@@ -99,10 +79,6 @@ class GameMap extends React.PureComponent {
 
     container.appendChild(this.stats.domElement);
 
-    container.addEventListener('mousedown', this._onDocumentMouseDown, false);
-    container.addEventListener('touchstart', this._onDocumentTouchStart, false);
-    document.addEventListener('touchmove', this._onDocumentTouchMove, false);
-
     const width = this.refContainer.offsetWidth;
     if (width !== 0) {
       const height = ((width / 16) * 9);
@@ -117,112 +93,14 @@ class GameMap extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    const container = this.refContainer;
-
-    container.removeEventListener('mousedown', this._onDocumentMouseDown, false);
-    container.removeEventListener('touchstart', this._onDocumentTouchStart, false);
-    document.removeEventListener('touchmove', this._onDocumentTouchMove, false);
-    document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
-    document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
-    document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
-
     delete this.stats;
   }
-
-  _onDocumentMouseDown = (event) => {
-    event.preventDefault();
-
-    document.addEventListener('mousemove', this._onDocumentMouseMove, false);
-    document.addEventListener('mouseup', this._onDocumentMouseUp, false);
-    document.addEventListener('mouseout', this._onDocumentMouseOut, false);
-
-    const windowHalfX = this.state.size.width / 2;
-    const windowHalfY = this.state.size.height / 2;
-
-    this.mouseOnMouseDown = {
-      x: event.clientX - windowHalfX,
-      y: event.clientY - windowHalfY,
-    };
-    this.groupPositionOnMouseDown = {
-      x: this.state.groupPosition.x,
-      y: this.state.groupPosition.y,
-    };
-
-    // this.targetRotationOnMouseDown = this.targetRotation;
-  };
-
-  _onDocumentMouseMove = (event) => {
-    const windowHalfX = this.state.size.width / 2;
-    const windowHalfY = this.state.size.height / 2;
-
-    this.mouseX = event.clientX - windowHalfX;
-    this.mouseY = event.clientY - windowHalfY;
-
-    this.groupPositionDiff.x = mathGetAbsWithNegativ(this.mouseOnMouseDown.x, this.mouseX);
-    this.groupPositionDiff.y = mathGetAbsWithNegativ(this.mouseOnMouseDown.y, this.mouseY) * -1;
-
-    // this.targetRotation = this.targetRotationOnMouseDown +
-      // (this.mouseX - this.mouseOnMouseDown.x) * 0.02;
-  };
-
-  _onDocumentMouseUp = () => {
-    document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
-    document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
-    document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
-  };
-
-  _onDocumentMouseOut = () => {
-    document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
-    document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
-    document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
-  };
-
-  _onDocumentTouchStart = (event) => {
-    if (event.touches.length === 1) {
-      event.preventDefault();
-
-      const windowHalfX = this.state.size.width / 2;
-
-      this.mouseOnMouseDown.x = event.touches[0].pageX - windowHalfX;
-      this.targetRotationOnMouseDown = this.targetRotation;
-    }
-  };
-
-  _onDocumentTouchMove = (event) => {
-    if (event.touches.length === 1) {
-      event.preventDefault();
-
-      const windowHalfX = this.state.size.width / 2;
-
-      this.mouseX = event.touches[0].pageX - windowHalfX;
-      this.targetRotation = this.targetRotationOnMouseDown +
-        ((this.mouseX - this.mouseOnMouseDown.x) * 0.05);
-    }
-  };
 
   _onAnimate = () => {
     this._onAnimateInternal();
   }
 
   _onAnimateInternal() {
-    if (
-      Math.abs(this.groupPositionDiff.x) > 0.000001 ||
-      Math.abs(this.groupPositionDiff.y) > 0.000001
-    ) {
-      this.setState({
-        groupPosition: new THREE.Vector3(
-           this.groupPositionOnMouseDown.x + this.groupPositionDiff.x,
-           this.groupPositionOnMouseDown.y + this.groupPositionDiff.y,
-           0,
-         ),
-      });
-
-      this.groupPositionDiff = {
-        x: 0,
-        y: 0,
-      };
-    }
-
     this.stats.update();
   }
 
