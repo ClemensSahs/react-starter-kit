@@ -11,6 +11,7 @@ import Resources from './Resources';
 import RegionsLayer from './RegionsLayer';
 
 import MoveMap from './Hoc/MoveMap';
+import MouseInput from './Inputs/MouseInput';
 
 
 /* eslint-disable no-underscore-dangle */
@@ -45,8 +46,6 @@ class GameMap extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
 
-    this.cameraPosition = new THREE.Vector3(0, 150, 500);
-
     const size = {
       width: 500,
       height: 300,
@@ -60,12 +59,15 @@ class GameMap extends React.PureComponent {
       },
       groupRotation: new THREE.Euler(0, 0, 0),
       groupPosition: new THREE.Vector3(0, 0, 0),
-      cameraPosition: {
+      cameraPosition: new THREE.Vector3(0, 150, 500),
+      cameraRotation: new THREE.Euler(),
+      cameraConfig: {
         fov: 50,
         aspect: size.width / size.height,
         near: 1,
         far: 1000,
       },
+      mouseInput: null,
     };
   }
 
@@ -109,21 +111,15 @@ class GameMap extends React.PureComponent {
       size,
       groupRotation,
       groupPosition,
+      cameraConfig,
+      cameraPosition,
+      cameraRotation,
+      mouseInput,
     } = this.state;
 
+    const onAnimate = this._onAnimate;
+
     return (<div ref={(c) => { this.refContainer = c; }}>
-      <div
-        style={{
-          color: 'black',
-          position: 'absolute',
-          top: '10px',
-          width: '100%',
-          textAlign: 'center',
-        }}
-      >
-        Simple procedurally generated 3D shapes<br />
-        Drag to spin
-      </div>
       <React3
         width={size.width}
         height={size.height}
@@ -131,18 +127,23 @@ class GameMap extends React.PureComponent {
         pixelRatio={typeof (window) === 'undefined' ? 1 : window.devicePixelRatio}
         mainCamera="mainCamera"
         clearColor={0xf0f0f0}
-        onAnimate={this._onAnimate}
+        onAnimate={onAnimate}
       >
+        <module
+          ref={(c) => { this.mouseInput = c; }}
+          descriptor={MouseInput}
+        />
         <scene ref={(c) => { this.refScene = c; }}>
           <perspectiveCamera
             name="mainCamera"
             ref={(c) => { this.refCamera = c; }}
-            fov={this.state.cameraPosition.fov}
-            aspect={this.state.cameraPosition.aspect}
-            near={this.state.cameraPosition.near}
-            far={this.state.cameraPosition.far}
+            fov={cameraConfig.fov}
+            aspect={cameraConfig.aspect}
+            near={cameraConfig.near}
+            far={cameraConfig.far}
 
-            position={this.cameraPosition}
+            position={cameraPosition}
+            rotation={cameraRotation}
           >
             <pointLight
               color={0xffffff}
@@ -154,7 +155,9 @@ class GameMap extends React.PureComponent {
             position={groupPosition}
             rotation={groupRotation}
           >
-            <RegionsLayer />
+            <RegionsLayer
+              mouseInput={mouseInput}
+            />
           </group>
         </scene>
       </React3>
