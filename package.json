@@ -36,6 +36,7 @@
     "query-string": "^4.3.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-mixin-decorator": "^1.2.3",
     "react-three-renderer": "^3.0.2",
     "sequelize": "^3.30.1",
     "source-map-support": "^0.4.11",

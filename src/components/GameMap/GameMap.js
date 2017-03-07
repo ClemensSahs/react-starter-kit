@@ -10,6 +10,8 @@ import Resources from './Resources';
 
 import RegionsLayer from './RegionsLayer';
 
+import MoveMap from './Hoc/MoveMap';
+
 
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-did-mount-set-state */
@@ -200,7 +202,7 @@ class GameMap extends React.PureComponent {
 
   _onAnimate = () => {
     this._onAnimateInternal();
-  };
+  }
 
   _onAnimateInternal() {
     if (
@@ -282,4 +284,4 @@ class GameMap extends React.PureComponent {
   }
 }
 
-export default GameMap;
+export default MoveMap(GameMap);
