@@ -19,11 +19,11 @@ function MoveMapWithKeyboard(WrappedComponent) {
 
           break;
         case Keys.left:
-          this.groupPositionDiff.x = -20;
+          this.groupPositionDiff.x = 20;
 
           break;
         case Keys.right:
-          this.groupPositionDiff.x = 20;
+          this.groupPositionDiff.x = -20;
 
           break;
 
