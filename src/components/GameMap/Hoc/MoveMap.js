@@ -14,14 +14,6 @@ function MoveMap(WrappedComponent) {
     constructor(props, context) {
       super(props, context);
 
-      this.targetRotationOnMouseDown = 0;
-
-      this.mouseX = 0;
-      this.mouseOnMouseDown = {
-        x: 0,
-        y: 0,
-      };
-
       this.targetRotation = 0;
       this.groupPositionDiff = {
         x: 0,
