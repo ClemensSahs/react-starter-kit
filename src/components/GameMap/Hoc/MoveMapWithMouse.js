@@ -1,4 +1,3 @@
-
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
@@ -7,6 +6,7 @@ function mathGetAbsWithNegativ(oldValue, newValue) {
 }
 
 const defaultMouseOnMouseDown = null;
+// const disableKeys = [ modifiers.shift, modifiers.control, modifiers.meta, modifiers.alt];
 
 function MoveMapWithMouse(WrappedComponent) {
   return class extends WrappedComponent {
@@ -16,7 +16,7 @@ function MoveMapWithMouse(WrappedComponent) {
 
       this.targetRotationOnMouseDown = 0;
 
-      this.mouseX = 0;
+      this.mouse = null;
       this.mouseOnMouseDown = defaultMouseOnMouseDown;
     }
 
@@ -25,8 +25,6 @@ function MoveMapWithMouse(WrappedComponent) {
       const container = this.refContainer;
 
       container.addEventListener('mousedown', this._onDocumentMouseDown, false);
-
-      console.log('componentDidMount');
     }
 
     componentWillUnmount() {
@@ -37,24 +35,26 @@ function MoveMapWithMouse(WrappedComponent) {
       document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
       document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
       document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
-
-      console.log('componentWillUnmount');
     }
 
     _onAnimateInternal(...args) {
-      if (this.mouseOnMouseDown) {
-        // this.mouseOnMouseDown = {
-        //   x: this.state.groupPosition.x + this.groupPositionDiff.x,
-        //   y: this.state.groupPosition.y + this.groupPositionDiff.y,
-        // };
-
-        console.log('_onAnimateInternal', this.mouseOnMouseDown);
+      if (this.mouseOnMouseDown && this.mouse) {
+        this.mouseOnMouseDown = {
+          x: this.mouse.x,
+          y: this.mouse.y,
+        };
       }
 
       super._onAnimateInternal(...args);
     }
 
     _onDocumentMouseDown = (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+        console.log('mouse move disabled');
+        return;
+      }
+      console.log('mouse move enabled');
+
       event.preventDefault();
 
       document.addEventListener('mousemove', this._onDocumentMouseMove, false);
@@ -80,33 +80,42 @@ function MoveMapWithMouse(WrappedComponent) {
       if (!this.mouseOnMouseDown) {
         return;
       }
+      console.log('_onDocumentMouseMove');
       const windowHalfX = this.state.size.width / 2;
       const windowHalfY = this.state.size.height / 2;
 
-      this.mouseX = event.clientX - windowHalfX;
-      this.mouseY = event.clientY - windowHalfY;
+      this.mouse = {
+        x: event.clientX - windowHalfX,
+        y: event.clientY - windowHalfY,
+      };
 
-      this.groupPositionDiff.x = mathGetAbsWithNegativ(this.mouseOnMouseDown.x, this.mouseX);
-      this.groupPositionDiff.y = mathGetAbsWithNegativ(this.mouseOnMouseDown.y, this.mouseY) * -1;
+      this.groupPositionDiff.x = mathGetAbsWithNegativ(this.mouseOnMouseDown.x, this.mouse.x);
+      this.groupPositionDiff.y = mathGetAbsWithNegativ(this.mouseOnMouseDown.y, this.mouse.y) * -1;
 
       // this.targetRotation = this.targetRotationOnMouseDown +
         // (this.mouseX - this.mouseOnMouseDown.x) * 0.02;
     };
 
     _onDocumentMouseUp = () => {
-      this.mouseOnMouseDown = defaultMouseOnMouseDown;
+      if (this.mouseOnMouseDown) {
+        this.mouseOnMouseDown = defaultMouseOnMouseDown;
+        this.mouse = defaultMouseOnMouseDown;
 
-      document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
-      document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
-      document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
+        document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
+        document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
+        document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
+      }
     };
 
     _onDocumentMouseOut = () => {
-      this.mouseOnMouseDown = defaultMouseOnMouseDown;
+      if (this.mouseOnMouseDown) {
+        this.mouseOnMouseDown = defaultMouseOnMouseDown;
+        this.mouse = defaultMouseOnMouseDown;
 
-      document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
-      document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
-      document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
+        document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
+        document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
+        document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
+      }
     };
 
     render() {
