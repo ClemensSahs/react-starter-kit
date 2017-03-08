@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 
-import MoveMapWithMouse from './MoveMapWithMouse';
-import MoveMapWithKeyboard from './MoveMapWithKeyboard';
+import MoveMapWithMouse from './WithMouse';
+import MoveMapWithKeyboard from './WithKeyboard';
 
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
