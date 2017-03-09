@@ -11,11 +11,7 @@ class RegionsLayer extends React.Component {
         id: PropTypes.number.isRequired,
         resourceId: PropTypes.string.isRequired,
         color: PropTypes.any.isRequired,
-        position: PropTypes.shape({
-          x: PropTypes.number.isRequired,
-          y: PropTypes.number.isRequired,
-          z: PropTypes.number.isRequired,
-        }).isRequired,
+        position: PropTypes.instanceOf(THREE.Vector3).isRequired,
         rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
       }),
     ).isRequired,

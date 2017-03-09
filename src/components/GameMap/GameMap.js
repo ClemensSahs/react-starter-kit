@@ -73,22 +73,14 @@ class GameMap extends React.PureComponent {
       {
         id: 1,
         resourceId: 'california',
-        position: {
-          x: -300,
-          y: -100,
-          z: 1,
-        },
+        position: new THREE.Vector3(-300, -100, 1),
         color: 0xf08000,
         rotation: new THREE.Euler(0, 0, 0),
       },
       {
         id: 2,
         resourceId: 'california',
-        position: {
-          x: 0,
-          y: -100,
-          z: 1,
-        },
+        position: new THREE.Vector3(0, -100, 1),
         color: 0xf080f0,
         rotation: new THREE.Euler(0, 0, 0),
       },

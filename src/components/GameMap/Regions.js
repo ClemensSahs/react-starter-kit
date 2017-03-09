@@ -19,11 +19,7 @@ class Regions extends React.Component {
   static propTypes = {
     resourceId: PropTypes.string.isRequired,
     color: PropTypes.any.isRequired,
-    position: PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
-      z: PropTypes.number.isRequired,
-    }).isRequired,
+    position: PropTypes.instanceOf(THREE.Vector3).isRequired,
     scale: PropTypes.instanceOf(THREE.Vector3).isRequired,
     rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
   };
@@ -32,17 +28,12 @@ class Regions extends React.Component {
 
   render() {
     const {
+      position,
       rotation,
       scale,
       resourceId,
       color,
     } = this.props;
-
-    const position = new THREE.Vector3(
-      this.props.position.x,
-      this.props.position.y,
-      this.props.position.z,
-    );
 
     return (<group>
       <mesh
