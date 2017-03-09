@@ -1,0 +1,38 @@
+import Stats from 'stats-js';
+
+/* eslint-disable no-console */
+/* eslint-disable no-underscore-dangle */
+
+
+function ShowStats(WrappedComponent) {
+  return class extends WrappedComponent {
+
+    componentDidMount() {
+      super.componentDidMount();
+      this.stats = new Stats();
+
+      const container = this.refContainer;
+
+      this.stats.domElement.style.position = 'absolute';
+      this.stats.domElement.style.top = '0px';
+
+      container.appendChild(this.stats.domElement);
+    }
+
+    componentWillUnmount() {
+      super.componentWillUnmount();
+      delete this.stats;
+    }
+
+    _onAnimateInternal() {
+      super._onAnimateInternal();
+      if (this.stats) {
+        this.stats.update();
+      } else {
+        console.error('stats not defined', this);
+      }
+    }
+  };
+}
+
+export default ShowStats;

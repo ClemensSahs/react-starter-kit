@@ -4,13 +4,12 @@ import * as THREE from 'three';
 
 import React3 from 'react-three-renderer';
 
-import Stats from 'stats-js';
-
 import Resources from './Resources';
 
 import RegionsLayer from './RegionsLayer';
 
 import MoveMap from './Hoc/MoveMap';
+import ShowStats from './Hoc/ShowStats';
 import MouseInput from './Inputs/MouseInput';
 
 
@@ -69,18 +68,34 @@ class GameMap extends React.PureComponent {
       },
       mouseInput: null,
     };
+
+    this.regionList = [
+      {
+        id: 1,
+        resourceId: 'california',
+        position: {
+          x: -300,
+          y: -100,
+          z: 1,
+        },
+        color: 0xf08000,
+        rotation: new THREE.Euler(0, 0, 0),
+      },
+      {
+        id: 2,
+        resourceId: 'california',
+        position: {
+          x: 0,
+          y: -100,
+          z: 1,
+        },
+        color: 0xf080f0,
+        rotation: new THREE.Euler(0, 0, 0),
+      },
+    ];
   }
 
   componentDidMount() {
-    this.stats = new Stats();
-
-    const container = this.refContainer;
-
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.top = '0px';
-
-    container.appendChild(this.stats.domElement);
-
     const width = this.refContainer.offsetWidth;
     if (width !== 0) {
       const height = ((width / 16) * 9);
@@ -94,19 +109,20 @@ class GameMap extends React.PureComponent {
     }
   }
 
-  componentWillUnmount() {
-    delete this.stats;
-  }
-
   _onAnimate = () => {
     this._onAnimateInternal();
   }
 
-  _onAnimateInternal() {
-    this.stats.update();
+  // eslint-disable-next-line class-methods-use-this
+  _onAnimateInternal() {}
+
+  _onClickRegion(region) {
+    // eslint-disable-next-line no-console
+    console.log('show region', this.regionList, region);
   }
 
   render() {
+    // console.log(this.regionList);
     const {
       size,
       groupRotation,
@@ -157,6 +173,8 @@ class GameMap extends React.PureComponent {
           >
             <RegionsLayer
               mouseInput={mouseInput}
+              regionList={this.regionList}
+              onClickRegion={this._onClickRegion}
             />
           </group>
         </scene>
@@ -165,4 +183,4 @@ class GameMap extends React.PureComponent {
   }
 }
 
-export default MoveMap(GameMap);
+export default ShowStats(MoveMap(GameMap));
