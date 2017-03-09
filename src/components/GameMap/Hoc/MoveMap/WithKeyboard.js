@@ -8,7 +8,6 @@ function MoveMapWithKeyboard(WrappedComponent) {
     @keydown(Keys.up, Keys.down, Keys.left, Keys.right)
     moveMap(event) {
       event.preventDefault();
-      console.log(this.groupPositionDiff);
 
       switch (event.which) {
         case Keys.up:
@@ -28,9 +27,8 @@ function MoveMapWithKeyboard(WrappedComponent) {
           break;
 
         default:
-          return;
+
       }
-      console.log(this.groupPositionDiff);
     }
   };
 }

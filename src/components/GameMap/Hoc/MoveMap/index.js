@@ -10,6 +10,7 @@ import MoveMapWithKeyboard from './WithKeyboard';
 
 function MoveMap(WrappedComponent) {
   return MoveMapWithMouse(MoveMapWithKeyboard(class extends WrappedComponent {
+  // return ((class extends WrappedComponent {
 
     constructor(props, context) {
       super(props, context);

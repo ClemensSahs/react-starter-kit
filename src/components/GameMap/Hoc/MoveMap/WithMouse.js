@@ -50,10 +50,8 @@ function MoveMapWithMouse(WrappedComponent) {
 
     _onDocumentMouseDown = (event) => {
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-        console.log('mouse move disabled');
         return;
       }
-      console.log('mouse move enabled');
 
       event.preventDefault();
 
@@ -80,7 +78,6 @@ function MoveMapWithMouse(WrappedComponent) {
       if (!this.mouseOnMouseDown) {
         return;
       }
-      console.log('_onDocumentMouseMove');
       const windowHalfX = this.state.size.width / 2;
       const windowHalfY = this.state.size.height / 2;
 
