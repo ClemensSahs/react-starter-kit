@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import * as THREE from 'three';
-import PropTypes from 'react/lib/ReactPropTypes';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
+import Clickable from './Hoc/Clickable';
 //
 // const extrudeSettings = {
 //   amount: 8,
@@ -19,37 +19,34 @@ class Regions extends React.Component {
   static propTypes = {
     resourceId: PropTypes.string.isRequired,
     color: PropTypes.any.isRequired,
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-    z: PropTypes.number.isRequired,
-    rx: PropTypes.number.isRequired,
-    ry: PropTypes.number.isRequired,
-    rz: PropTypes.number.isRequired,
-    s: PropTypes.number.isRequired,
+    position: PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+      z: PropTypes.number.isRequired,
+    }).isRequired,
+    scale: PropTypes.instanceOf(THREE.Vector3).isRequired,
+    rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
   };
 
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   render() {
     const {
-      rx,
-      ry,
-      rz,
-      s,
+      rotation,
+      scale,
       resourceId,
       color,
-      x,
-      y,
-      z,
-      } = this.props;
+    } = this.props;
 
-    const rotation = new THREE.Euler(rx, ry, rz);
-    const scale = new THREE.Vector3(s, s, s);
+    const position = new THREE.Vector3(
+      this.props.position.x,
+      this.props.position.y,
+      this.props.position.z,
+    );
 
     return (<group>
       <mesh
-        // flat shape
-        position={new THREE.Vector3(x, y, z)}
+        position={position}
         rotation={rotation}
         scale={scale}
       >
@@ -64,7 +61,7 @@ class Regions extends React.Component {
       </mesh>
       <line
         // solid line
-        position={new THREE.Vector3(x, y, z)}
+        position={position}
         rotation={rotation}
         scale={scale}
       >
@@ -81,4 +78,4 @@ class Regions extends React.Component {
   }
 }
 
-export default Regions;
+export default Clickable(Regions);

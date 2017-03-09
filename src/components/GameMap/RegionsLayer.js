@@ -1,32 +1,46 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import * as THREE from 'three';
+
 import Regions from './Regions';
 
 class RegionsLayer extends React.Component {
+  static propTypes = {
+    onClickRegion: PropTypes.func.isRequired,
+    regionList: PropTypes.arrayOf(
+      React.PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        resourceId: PropTypes.string.isRequired,
+        color: PropTypes.any.isRequired,
+        position: PropTypes.shape({
+          x: PropTypes.number.isRequired,
+          y: PropTypes.number.isRequired,
+          z: PropTypes.number.isRequired,
+        }).isRequired,
+        rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
+      }),
+    ).isRequired,
+  };
 
   render() {
+    const {
+      regionList,
+      onClickRegion,
+    } = this.props;
+
+    const scale = new THREE.Vector3(1, 1, 1);
     return (<group>
-      <Regions
-        resourceId="california"
-        x={-300}
-        y={-100}
-        z={1}
-        color={0xf08000}
-        rx={0}
-        ry={0}
-        rz={0}
-        s={1}
-      />
-      <Regions
-        resourceId="california2"
-        x={0}
-        y={-100}
-        z={0}
-        color={0xf080f0}
-        rx={0}
-        ry={0}
-        rz={0}
-        s={1}
-      />
+
+      {regionList.map(region => (
+        <Regions
+          key={region.id}
+          resourceId={region.resourceId}
+          position={region.position}
+          rotation={region.rotation}
+          color={region.color}
+          scale={scale}
+          onClick={onClickRegion}
+        />
+    ))}
     </group>);
   }
 }
