@@ -1,3 +1,7 @@
+
+import { getDisplayName } from '../../../../utils/hoc';
+
+
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
@@ -10,6 +14,7 @@ const defaultMouseOnMouseDown = null;
 
 function MoveMapWithMouse(WrappedComponent) {
   return class extends WrappedComponent {
+    static displayName = getDisplayName(WrappedComponent, 'MoveMapWithMouse');
 
     constructor(props, context) {
       super(props, context);

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import MoveMapWithMouse from './WithMouse';
 import MoveMapWithKeyboard from './WithKeyboard';
+import { getDisplayName } from '../../../../utils/hoc';
 
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
@@ -10,6 +11,7 @@ import MoveMapWithKeyboard from './WithKeyboard';
 
 function MoveMap(WrappedComponent) {
   return MoveMapWithMouse(MoveMapWithKeyboard(class extends WrappedComponent {
+    static displayName = getDisplayName(WrappedComponent, 'MoveMap');
   // return ((class extends WrappedComponent {
 
     constructor(props, context) {

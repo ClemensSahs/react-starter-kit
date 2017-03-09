@@ -1,5 +1,6 @@
 // import * as THREE from 'three';
 import { PropTypes } from 'react';
+import { getDisplayName } from '../../../utils/hoc';
 
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
@@ -7,6 +8,7 @@ import { PropTypes } from 'react';
 
 function Clickable(WrappedComponent) {
   return class extends WrappedComponent {
+    static displayName = getDisplayName(WrappedComponent, 'Clickable');
     static propTypes = Object.assign(
       WrappedComponent.propTypes,
       {

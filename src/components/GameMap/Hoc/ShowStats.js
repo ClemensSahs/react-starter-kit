@@ -1,4 +1,5 @@
 import Stats from 'stats-js';
+import { getDisplayName } from '../../../utils/hoc';
 
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
@@ -6,6 +7,7 @@ import Stats from 'stats-js';
 
 function ShowStats(WrappedComponent) {
   return class extends WrappedComponent {
+    static displayName = getDisplayName(WrappedComponent, 'ShowStats');
 
     componentDidMount() {
       super.componentDidMount();

@@ -1,10 +1,12 @@
 import keydown, { Keys } from 'react-keydown';
+import { getDisplayName } from '../../../../utils/hoc';
 
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 
 function MoveMapWithKeyboard(WrappedComponent) {
   return class extends WrappedComponent {
+    static displayName = getDisplayName(WrappedComponent, 'MoveMapWithKeyboard');
     @keydown(Keys.up, Keys.down, Keys.left, Keys.right)
     moveMap(event) {
       event.preventDefault();
