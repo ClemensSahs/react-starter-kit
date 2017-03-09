@@ -15,7 +15,7 @@ import Clickable from './Hoc/Clickable';
 
 
 /* eslint-disable react/forbid-prop-types */
-class Regions extends React.Component {
+class Regions extends React.PureComponent {
   static propTypes = {
     resourceId: PropTypes.string.isRequired,
     color: PropTypes.any.isRequired,

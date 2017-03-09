@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import Regions from './Regions';
 
-class RegionsLayer extends React.Component {
+class RegionsLayer extends React.PureComponent {
   static propTypes = {
     onClickRegion: PropTypes.func.isRequired,
     regionList: PropTypes.arrayOf(
