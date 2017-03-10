@@ -29,7 +29,7 @@ class Game extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1>React.js News</h1>
-          <GameMap id={this.state.gameId} />
+          <GameMap gameId={this.state.gameId} />
         </div>
       </div>
     );

@@ -1,3 +1,9 @@
+
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/no-did-mount-set-state */
+
+
 import React, { PropTypes } from 'react';
 
 import * as THREE from 'three';
@@ -10,11 +16,8 @@ import RegionsLayer from './RegionsLayer';
 
 import MoveMap from './Hoc/MoveMap';
 import ShowStats from './Hoc/ShowStats';
+
 import MouseInput from './Inputs/MouseInput';
-
-
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/no-did-mount-set-state */
 
 
 // https://de.wikipedia.org/wiki/NUTS#Hierarchieebenen
@@ -39,7 +42,7 @@ NUTS 3  800.000  150.000
 
 class GameMap extends React.PureComponent {
   static propTypes = {
-    id: PropTypes.number.isRequired,
+    gameId: PropTypes.number.isRequired,
   };
 
   constructor(props, context) {
@@ -69,7 +72,7 @@ class GameMap extends React.PureComponent {
       mouseInput: null,
     };
 
-    this.regionList = [
+    this.sourceRegionList = [
       {
         id: 1,
         resourceId: 'california',
@@ -79,12 +82,19 @@ class GameMap extends React.PureComponent {
       },
       {
         id: 2,
-        resourceId: 'california',
+        resourceId: 'california2',
         position: new THREE.Vector3(0, -100, 1),
         color: 0xf080f0,
         rotation: new THREE.Euler(0, 0, 0),
       },
     ];
+
+
+    this.regionList = [];
+  }
+
+  componentWillMount() {
+    console.log(`load gamemap for game id(${this.props.gameId})`);
   }
 
   componentDidMount() {
@@ -100,21 +110,55 @@ class GameMap extends React.PureComponent {
       });
     }
   }
+    // eslint-disable-next-line class-methods-use-this
+  componentDidUpdate(prevProps, prevState) {
+    const width = this.refContainer.offsetWidth;
+    if (width !== 0) {
+      const height = ((width / 16) * 9);
+
+      if (width !== prevState.width || height !== prevState.height) {
+        this.refMouseInput.containerResized();
+      }
+    }
+  }
 
   _onAnimate = () => {
     this._onAnimateInternal();
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _onAnimateInternal() {}
+  _onAnimateInternal() {
+    if (!this.refMouseInput.isReady()) {
+      // console.log(this.refScene, this.refContainer, this.refCamera);
+      this.refMouseInput.ready(this.refScene, this.refContainer, this.refCamera);
+      this.refMouseInput.restrictIntersections(this.regionList);
+      this.refMouseInput.setActive(false);
+    }
 
-  _onClickRegion(region) {
+    if (this.state.mouseInput !== this.refMouseInput) {
+      this.setState({
+        mouseInput: this.refMouseInput,
+      });
+    }
+
+    if (this.state.camera !== this.refCamera) {
+      this.setState({
+        camera: this.refCamera,
+      });
+    }
+  }
+
+  _onClickRegion = (region) => {
     // eslint-disable-next-line no-console
-    console.log('show region', this.regionList, region);
+    console.log('show region', this.regionList, region.props.resourceId);
+  }
+
+  _onMountedRegionList = (regionList) => {
+    this.regionList = regionList;
+    console.log('all region are mounted:', regionList);
   }
 
   render() {
-    // console.log(this.regionList);
     const {
       size,
       groupRotation,
@@ -138,7 +182,7 @@ class GameMap extends React.PureComponent {
         onAnimate={onAnimate}
       >
         <module
-          ref={(c) => { this.mouseInput = c; }}
+          ref={(c) => { this.refMouseInput = c; }}
           descriptor={MouseInput}
         />
         <scene ref={(c) => { this.refScene = c; }}>
@@ -165,8 +209,9 @@ class GameMap extends React.PureComponent {
           >
             <RegionsLayer
               mouseInput={mouseInput}
-              regionList={this.regionList}
+              regionList={this.sourceRegionList}
               onClickRegion={this._onClickRegion}
+              onMountedRegionList={this._onMountedRegionList}
             />
           </group>
         </scene>
@@ -176,3 +221,4 @@ class GameMap extends React.PureComponent {
 }
 
 export default ShowStats(MoveMap(GameMap));
+// export default ((GameMap));

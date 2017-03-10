@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import ReactUpdates from 'react-dom/lib/ReactUpdates';
@@ -7,13 +9,6 @@ import SyntheticMouseEvent from 'react-dom/lib/SyntheticMouseEvent';
 import Module from 'react-three-renderer/lib/Module';
 
 import PropTypes from 'react/lib/ReactPropTypes';
-
-
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/no-did-mount-set-state */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable no-continue */
-/* eslint-disable no-mixed-operators */
 
 
 const tempVector2 = new THREE.Vector2();
