@@ -30,8 +30,6 @@ function ShowStats(WrappedComponent) {
       super._onAnimateInternal();
       if (this.stats) {
         this.stats.update();
-      } else {
-        console.error('stats not defined', this);
       }
     }
   };

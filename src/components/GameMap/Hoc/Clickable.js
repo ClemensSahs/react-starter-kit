@@ -17,6 +17,7 @@ function Clickable(WrappedComponent) {
     );
 
     componentDidMount() {
+      super.componentDidMount();
       if (!this.props.onClick) {
         console.error('Component has no onClick property', this);
       }

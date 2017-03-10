@@ -116,7 +116,14 @@ class GameMap extends React.PureComponent {
     if (width !== 0) {
       const height = ((width / 16) * 9);
 
-      if (width !== prevState.width || height !== prevState.height) {
+      // containerResized use this.refContainer
+      if (
+        this.refContainer &&
+        (
+          width !== prevState.size.width ||
+          height !== prevState.size.height
+        )
+      ) {
         this.refMouseInput.containerResized();
       }
     }
@@ -128,11 +135,18 @@ class GameMap extends React.PureComponent {
 
   // eslint-disable-next-line class-methods-use-this
   _onAnimateInternal() {
+    if (!this.refMouseInput) {
+      return;
+    }
+
     if (!this.refMouseInput.isReady()) {
-      // console.log(this.refScene, this.refContainer, this.refCamera);
-      this.refMouseInput.ready(this.refScene, this.refContainer, this.refCamera);
-      this.refMouseInput.restrictIntersections(this.regionList);
-      this.refMouseInput.setActive(false);
+      if (this.refScene && this.refContainer && this.refCamera) {
+        this.refMouseInput.ready(this.refScene, this.refContainer, this.refCamera);
+        this.refMouseInput.restrictIntersections(this.regionList);
+        this.refMouseInput.setActive(false);
+      } else {
+        console.log('refMouseInput.isReady faild', this.refScene && this.refContainer && this.refCamera);
+      }
     }
 
     if (this.state.mouseInput !== this.refMouseInput) {
@@ -221,4 +235,3 @@ class GameMap extends React.PureComponent {
 }
 
 export default ShowStats(MoveMap(GameMap));
-// export default ((GameMap));

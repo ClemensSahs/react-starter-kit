@@ -5,8 +5,7 @@ import React, { PropTypes } from 'react';
 import * as THREE from 'three';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
-import Clickable from './Hoc/Clickable';
-// import MouseInput from './Inputs/MouseInput';
+import MouseInput from './Inputs/MouseInput';
 //
 // const extrudeSettings = {
 //   amount: 8,
@@ -25,7 +24,9 @@ class Regions extends React.PureComponent {
     position: PropTypes.instanceOf(THREE.Vector3).isRequired,
     scale: PropTypes.instanceOf(THREE.Vector3).isRequired,
     rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
-    // mouseInput: PropTypes.instanceOf(MouseInput).isRequired,
+    /* eslint-disable react/require-default-props */
+    /* eslint-disable react/no-unused-prop-types */
+    mouseInput: PropTypes.instanceOf(MouseInput),
     onCreate: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
   };
@@ -114,4 +115,4 @@ class Regions extends React.PureComponent {
   }
 }
 
-export default Clickable(Regions);
+export default (Regions);

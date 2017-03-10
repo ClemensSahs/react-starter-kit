@@ -4,6 +4,7 @@ import React, { PropTypes } from 'react';
 import * as THREE from 'three';
 
 import Regions from './Regions';
+import MouseInput from './Inputs/MouseInput';
 
 class RegionsLayer extends React.PureComponent {
   static propTypes = {
@@ -18,6 +19,8 @@ class RegionsLayer extends React.PureComponent {
         rotation: PropTypes.instanceOf(THREE.Euler).isRequired,
       }),
     ).isRequired,
+    // eslint-disable-next-line react/require-default-props
+    mouseInput: PropTypes.instanceOf(MouseInput),
   };
 
   constructor(props, context) {
@@ -42,6 +45,7 @@ class RegionsLayer extends React.PureComponent {
 
   render() {
     const {
+      mouseInput,
       regionList,
       onClickRegion,
     } = this.props;
@@ -61,6 +65,7 @@ class RegionsLayer extends React.PureComponent {
           scale={scale}
           onClick={onClickRegion}
           onCreate={onCreateRegion}
+          mouseInput={mouseInput}
         />);
       })}
     </group>);
