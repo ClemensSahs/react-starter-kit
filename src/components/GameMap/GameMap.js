@@ -99,9 +99,8 @@ class GameMap extends React.PureComponent {
 
   componentDidMount() {
     const width = this.refContainer.offsetWidth;
-    if (width !== 0) {
-      const height = ((width / 16) * 9);
-
+    const height = this.refContainer.offsetHeight;
+    if (width !== 0 && height !== 0) {
       this.setState({
         size: {
           width,
@@ -113,9 +112,8 @@ class GameMap extends React.PureComponent {
     // eslint-disable-next-line class-methods-use-this
   componentDidUpdate(prevProps, prevState) {
     const width = this.refContainer.offsetWidth;
-    if (width !== 0) {
-      const height = ((width / 16) * 9);
-
+    const height = this.refContainer.offsetHeight;
+    if (width !== 0 && height !== 0) {
       // containerResized use this.refContainer
       if (
         this.refContainer &&
@@ -183,9 +181,17 @@ class GameMap extends React.PureComponent {
       mouseInput,
     } = this.state;
 
+    const {
+      gameId,
+      ...rest
+    } = this.props;
+
     const onAnimate = this._onAnimate;
 
-    return (<div ref={(c) => { this.refContainer = c; }}>
+    return (<div
+      {...rest}
+      ref={(c) => { this.refContainer = c; }}
+    >
       <React3
         width={size.width}
         height={size.height}

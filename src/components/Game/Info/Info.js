@@ -8,18 +8,15 @@
  */
 
 import React from 'react';
-import Game from './Game';
 
-export default {
+class Info extends React.Component {
+  render() {
+    return (
+      <div {...this.props}>
+        <div>Fab</div>
+      </div>
+    );
+  }
+}
 
-  path: '/game',
-
-  async action() {
-    const gameId = 1;
-    return {
-      title: 'HOI Browser',
-      component: <Game gameId={gameId} />,
-    };
-  },
-
-};
+export default Info;

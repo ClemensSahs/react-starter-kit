@@ -8,18 +8,17 @@
  */
 
 import React from 'react';
-import Game from './Game';
 
-export default {
+class ExpDisplay extends React.Component {
+  render() {
+    return (
+      <div {...this.props}>
+        <div title="Land Erfahrunug">12</div>
+        <div title="Luft Erfahrunug">32</div>
+        <div title="See Erfahrunug">12</div>
+      </div>
+    );
+  }
+}
 
-  path: '/game',
-
-  async action() {
-    const gameId = 1;
-    return {
-      title: 'HOI Browser',
-      component: <Game gameId={gameId} />,
-    };
-  },
-
-};
+export default ExpDisplay;

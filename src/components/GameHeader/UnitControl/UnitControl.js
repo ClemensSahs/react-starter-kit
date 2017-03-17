@@ -8,18 +8,17 @@
  */
 
 import React from 'react';
-import Game from './Game';
 
-export default {
+class UnitControl extends React.Component {
+  render() {
+    return (
+      <div {...this.props}>
+        <div>land</div>
+        <div>water</div>
+        <div>air</div>
+      </div>
+    );
+  }
+}
 
-  path: '/game',
-
-  async action() {
-    const gameId = 1;
-    return {
-      title: 'HOI Browser',
-      component: <Game gameId={gameId} />,
-    };
-  },
-
-};
+export default UnitControl;

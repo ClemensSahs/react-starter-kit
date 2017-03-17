@@ -14,8 +14,109 @@
   padding-right: 20px;
 }
 
-.container {
-  margin: 0 auto;
-  padding: 0 0 40px;
-  max-width: var(--max-content-width);
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  z-index: 100;
+}
+
+.headerItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.flag {
+  background: white;
+}
+
+.summaryInfo {
+  background: white;
+  padding: 0.2em;
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    padding: 0.5em;
+  }
+}
+
+.mainButton {
+  background: white;
+  padding: 0.2em;
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    padding: 0.1em 0.5em;
+  }
+}
+
+.headerCenter {
+  flex-grow: 1;
+
+  > div {
+    padding: 0.5em 1em;
+    background: white;
+  }
+}
+
+.rightControl {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.speedControl {
+  background: white;
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    padding: 0.5em 1em;
+  }
+}
+
+.unitControlButtons {
+  background: white;
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    padding: 0.5em 1em;
+  }
+}
+
+.mapModes {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.info {
+  position: absolute;
+  left: 0;
+  top: 100px;
+}
+
+.oobInfo {
+  position: absolute;
+  right: 0;
+  top: 150px;
+}
+
+.oobQuick {
+  position: absolute;
+  bottom: 0;
 }

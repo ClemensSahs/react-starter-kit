@@ -8,18 +8,17 @@
  */
 
 import React from 'react';
-import Game from './Game';
 
-export default {
+class SpeedControl extends React.Component {
+  render() {
+    return (
+      <div {...this.props}>
+        <div>-</div>
+        <div>speed</div>
+        <div>+</div>
+      </div>
+    );
+  }
+}
 
-  path: '/game',
-
-  async action() {
-    const gameId = 1;
-    return {
-      title: 'HOI Browser',
-      component: <Game gameId={gameId} />,
-    };
-  },
-
-};
+export default SpeedControl;
